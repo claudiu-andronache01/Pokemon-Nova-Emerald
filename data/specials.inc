@@ -346,6 +346,8 @@ gSpecials::
 	def_special GetContestMultiplayerId
 	def_special ScriptGetPartyMonSpecies
 	def_special IsSelectedMonEgg
+	def_special IsSelectedMonMale
+	def_special IsSelectedMonFemale
 	def_special HasMovesToRelearn
 	def_special TryInitBattleTowerAwardManObjectEvent
 	def_special MoveOutOfSecretBaseFromOutside

@@ -273,18 +273,72 @@ EventScript_EggHatch::
 Route117_PokemonDayCare_EventScript_Breeder::
 	lock
 	faceplayer
-	message Route117_Text_Breeder_Greeting
+	msgbox Route117_Text_Breeder_Greeting, MSGBOX_DEFAULT
 	waitmessage
-	multichoicedefault 15, 6, MULTI_BREEDER, 1, FALSE
+	multichoice 15, 6, MULTI_BREEDER, TRUE
+	switch VAR_RESULT	
+	case 0, readrules
+	case 1, ChooseMalePokemon 
+	closemessage
+	; case 2, exit
+	release	
+	end
 
-	
+ChooseMalePokemon::
+	msgbox Route117_Text_ChooseMalePokemon, MSGBOX_DEFAULT
+	waitmessage
+	special ChoosePartyMon
+	waitstate
+	goto_if_eq VAR_0x8004, PARTY_NOTHING_CHOSEN, Route117_PokemonDayCare_EventScript_ComeAgain
+	special IsSelectedMonMale
+	goto_if_eq VAR_RESULT, TRUE, ChooseMalePokemon_SelectedMale
+	msgbox Route117_Text_ChooseMalePokemon_NotMale, MSGBOX_DEFAULT
 	release
 	end
 
-Route117_Text_Breeder_Greeting:
-	.string "I'm a pokemon breeder.\p"
-	.string "Would you like to do?.\p"
+ChooseMalePokemon_SelectedMale::
+	msgbox Route117_Text_ChooseMalePokemon_SelectedMale, MSGBOX_DEFAULT
+	special ChoosePartyMon
+	waitstate
+	goto_if_eq VAR_0x8004, PARTY_NOTHING_CHOSEN, Route117_PokemonDayCare_EventScript_ComeAgain
+	special IsSelectedMonFemale
+	goto_if_eq VAR_RESULT, TRUE, ChooseFemalePokemon_SelectedFemale
+	msgbox Route117_Text_ChooseFemalePokemon_NotFemale, MSGBOX_DEFAULT
+	release
+	end
 
+ChooseFemalePokemon_SelectedFemale::
+	msgbox Route117_Text_ChooseFemalePokemon_SelectedFemale, MSGBOX_DEFAULT
+	release
+	end	
+
+readrules::
+	msgbox msgbox1, MSGBOX_DEFAULT
+	closemessage
+	end
+
+msgbox1:
+	.string "readrules 211$"	
+	
+Route117_Text_Breeder_Greeting:
+	.string "I'm a pokemon breeder,\n"
+	.string "What would you like to do?$"
+
+Route117_Text_ChooseMalePokemon:
+	.string "Choose a male pokemon.$"
+
+Route117_Text_ChooseMalePokemon_NotMale:
+	.string "That POKeMON is not male.$"
+
+Route117_Text_ChooseMalePokemon_SelectedMale:
+	.string "Great! Now choose a female pokemon.$"
+
+Route117_Text_ChooseFemalePokemon_NotFemale	:	
+	.string "That POKeMON is not female.$"	
+
+Route117_Text_ChooseFemalePokemon_SelectedFemale:	
+	.string "Great! Now you can breed these two \n"
+	.string "pokemon at the day care. $"
 
 Route117_Text_SeeWifeIfYoudLikeMeToRaiseMon:
 	.string "I'm the DAY-CARE MAN.\p"

@@ -8037,6 +8037,28 @@ void IsSelectedMonEgg(void)
         gSpecialVar_Result = FALSE;
 }
 
+void IsSelectedMonMale(void)
+{
+    if (gSpecialVar_0x8004 >= PARTY_SIZE || gSpecialVar_0x8004 == PC_MON_CHOSEN)
+    {
+        gSpecialVar_Result = FALSE;
+        return;
+    }
+
+    gSpecialVar_Result = (GetMonGender(&gPlayerParty[gSpecialVar_0x8004]) == MON_MALE);
+}
+
+void IsSelectedMonFemale(void)
+{
+    if (gSpecialVar_0x8004 >= PARTY_SIZE || gSpecialVar_0x8004 == PC_MON_CHOSEN)
+    {
+        gSpecialVar_Result = FALSE;
+        return;
+    }
+
+    gSpecialVar_Result = (GetMonGender(&gPlayerParty[gSpecialVar_0x8004]) == MON_FEMALE);
+}
+
 void IsLastMonThatKnowsSurf(void)
 {
     enum Move move;
