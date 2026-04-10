@@ -1106,7 +1106,8 @@ static u8 SetUpCopyrightScreen(void)
             break;
 #if EXPANSION_INTRO == TRUE
         SetMainCallback2(CB2_ExpansionIntro);
-        CreateTask(Task_HandleExpansionIntro, 0);
+        // CreateTask(Task_HandleExpansionIntro, 0);
+         CreateTask(CB2_InitTitleScreen);
 #else
         CreateTask(Task_Scene1_Load, 0);
         SetMainCallback2(MainCB2_Intro);

@@ -270,6 +270,22 @@ EventScript_EggHatch::
 	releaseall
 	end
 
+Route117_PokemonDayCare_EventScript_Breeder::
+	lock
+	faceplayer
+	message Route117_Text_Breeder_Greeting
+	waitmessage
+	multichoicedefault 15, 6, MULTI_BREEDER, 1, FALSE
+
+	
+	release
+	end
+
+Route117_Text_Breeder_Greeting:
+	.string "I'm a pokemon breeder.\p"
+	.string "Would you like to do?.\p"
+
+
 Route117_Text_SeeWifeIfYoudLikeMeToRaiseMon:
 	.string "I'm the DAY-CARE MAN.\p"
 	.string "I help take care of the precious\n"

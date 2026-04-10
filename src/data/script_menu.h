@@ -1048,6 +1048,7 @@ static const struct MenuAction sMultichoiceList_TrainerCardIconTint[] = {
 static const u8 sText_Eggs[] = _("EGGS");
 static const u8 sText_Victories[] = _("VICTORIES");
 
+
 static const struct MenuAction sMultichoiceList_HOF_Quit[] = {
     { gText_HallOfFame },
     { gText_ShopQuit }
@@ -1086,6 +1087,16 @@ static const struct MenuAction sMultichoiceList_HOF_Eggs_Victories_Quit[] = {
     { sText_Eggs },
     { sText_Victories },
     { gText_ShopQuit }
+};
+
+static const u8 sText_ReadRules[] = _("READ RULES");
+static const u8 sText_Breed[] = _("BREED POKéMONS");
+
+static const struct MenuAction sMultichoiceList_Breeder[] = {
+
+    { sText_ReadRules },
+    { sText_Breed },
+    { gText_Exit }
 };
 
 static const struct MenuAction MultichoiceList_Exit[] =
@@ -1260,6 +1271,7 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_HOF_VICTORIES_QUIT]                         = MULTICHOICE(sMultichoiceList_HOF_Victories_Quit),
     [MULTI_EGGS_VICTORIES_QUIT]                        = MULTICHOICE(sMultichoiceList_Eggs_Victories_Quit),
     [MULTI_HOF_EGGS_VICTORIES_QUIT]                    = MULTICHOICE(sMultichoiceList_HOF_Eggs_Victories_Quit),
+    [MULTI_BREEDER]                                    = MULTICHOICE(sMultichoiceList_Breeder),
 };
 
 const u8 *const gStdStrings[] =
