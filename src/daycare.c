@@ -1273,6 +1273,60 @@ u8 GetDaycareState(void)
     return DAYCARE_NO_MONS;
 }
 
+u16 BreedPokemon(void)
+{
+    u8 parentAIndex = gSpecialVar_0x8005;
+    u8 parentBIndex = gSpecialVar_0x8004;
+    u8 partyCount = CalculatePlayerPartyCount();
+    u16 species;
+    struct Pokemon *parentA;
+    struct Pokemon *parentB;
+    struct Pokemon *child;
+    u32 personality;
+    u32 i;
+
+    if (partyCount == PARTY_SIZE)
+        return BREED_RESULT_NO_SPACE;
+    if (parentAIndex >= partyCount || parentBIndex >= partyCount || parentAIndex == parentBIndex)
+        return BREED_RESULT_INVALID_PARENTS;
+
+    parentA = &gPlayerParty[parentAIndex];
+    parentB = &gPlayerParty[parentBIndex];
+    species = GetMonData(parentA, MON_DATA_SPECIES);
+    if (species == SPECIES_NONE
+     || GetMonData(parentA, MON_DATA_IS_EGG)
+     || GetMonData(parentB, MON_DATA_IS_EGG))
+        return BREED_RESULT_INVALID_PARENTS;
+    if (GetMonData(parentB, MON_DATA_SPECIES) != species)
+        return BREED_RESULT_DIFFERENT_SPECIES;
+
+    child = &gPlayerParty[partyCount];
+    personality = GetMonPersonality(species, MON_GENDER_RANDOM, NATURE_RANDOM, RANDOM_UNOWN_LETTER);
+    CreateMonWithIVs(child, species, 1, personality, OTID_STRUCT_PLAYER_ID, USE_RANDOM_IVS);
+    GiveMonInitialMoveset(child);
+
+    for (i = 0; i < NUM_STATS; i++)
+    {
+        u32 parentAIV = GetMonData(parentA, MON_DATA_HP_IV + i);
+        u32 parentBIV = GetMonData(parentB, MON_DATA_HP_IV + i);
+        u32 high = parentAIV > parentBIV ? parentAIV : parentBIV;
+        u32 low = parentAIV < parentBIV ? parentAIV : parentBIV;
+        s32 iv = (6 * high + 4 * low + 5) / 10 + (s32)(Random() % 7) - 3;
+        u8 childIV;
+
+        if (iv < 0)
+            iv = 0;
+        else if (iv > MAX_PER_STAT_IVS)
+            iv = MAX_PER_STAT_IVS;
+
+        childIV = (u8)iv;
+        SetMonData(child, MON_DATA_HP_IV + i, &childIV);
+    }
+
+    CalculateMonStats(child);
+    return BREED_RESULT_SUCCESS;
+}
+
 static u8 UNUSED GetDaycarePokemonCount(void)
 {
     u8 ret = CountPokemonInDaycare(&gSaveBlock1Ptr->daycare);

@@ -285,6 +285,8 @@ Route117_PokemonDayCare_EventScript_Breeder::
 	end
 
 ChooseMalePokemon::
+	specialvar VAR_RESULT, CalculatePlayerPartyCount
+	goto_if_eq VAR_RESULT, PARTY_SIZE, Route117_PokemonDayCare_EventScript_Breeder_NoRoom
 	msgbox Route117_Text_ChooseMalePokemon, MSGBOX_DEFAULT
 	waitmessage
 	special ChoosePartyMon
@@ -297,6 +299,7 @@ ChooseMalePokemon::
 	end
 
 ChooseMalePokemon_SelectedMale::
+	copyvar VAR_0x8005, VAR_0x8004
 	msgbox Route117_Text_ChooseMalePokemon_SelectedMale, MSGBOX_DEFAULT
 	special ChoosePartyMon
 	waitstate
@@ -308,7 +311,26 @@ ChooseMalePokemon_SelectedMale::
 	end
 
 ChooseFemalePokemon_SelectedFemale::
-	msgbox Route117_Text_ChooseFemalePokemon_SelectedFemale, MSGBOX_DEFAULT
+	specialvar VAR_RESULT, BreedPokemon
+	goto_if_eq VAR_RESULT, BREED_RESULT_SUCCESS, Route117_PokemonDayCare_EventScript_Breeder_BreedSuccess
+	goto_if_eq VAR_RESULT, BREED_RESULT_DIFFERENT_SPECIES, Route117_PokemonDayCare_EventScript_Breeder_DifferentSpecies
+	goto_if_eq VAR_RESULT, BREED_RESULT_NO_SPACE, Route117_PokemonDayCare_EventScript_Breeder_NoRoom
+	msgbox Route117_Text_Breeder_InvalidParents, MSGBOX_DEFAULT
+	release
+	end
+
+Route117_PokemonDayCare_EventScript_Breeder_BreedSuccess::
+	msgbox Route117_Text_Breeder_BreedSuccess, MSGBOX_DEFAULT
+	release
+	end
+
+Route117_PokemonDayCare_EventScript_Breeder_DifferentSpecies::
+	msgbox Route117_Text_Breeder_DifferentSpecies, MSGBOX_DEFAULT
+	release
+	end
+
+Route117_PokemonDayCare_EventScript_Breeder_NoRoom::
+	msgbox Route117_Text_YouHaveNoRoomForIt, MSGBOX_DEFAULT
 	release
 	end	
 
@@ -325,20 +347,29 @@ Route117_Text_Breeder_Greeting:
 	.string "What would you like to do?$"
 
 Route117_Text_ChooseMalePokemon:
-	.string "Choose a male pokemon.$"
+	.string "Choose a male POKéMON.$"
 
 Route117_Text_ChooseMalePokemon_NotMale:
 	.string "That POKeMON is not male.$"
 
 Route117_Text_ChooseMalePokemon_SelectedMale:
-	.string "Great! Now choose a female pokemon.$"
+	.string "Now choose a female POKéMON of\n"
+	.string "the same species.$"
 
 Route117_Text_ChooseFemalePokemon_NotFemale	:	
 	.string "That POKeMON is not female.$"	
 
-Route117_Text_ChooseFemalePokemon_SelectedFemale:	
-	.string "Great! Now you can breed these two \n"
-	.string "pokemon at the day care. $"
+Route117_Text_Breeder_BreedSuccess:
+	.string "A new POKéMON was born!\n"
+	.string "It was added to your party.$"
+
+Route117_Text_Breeder_DifferentSpecies:
+	.string "These POKéMON must be the same\n"
+	.string "species to breed.$"
+
+Route117_Text_Breeder_InvalidParents:
+	.string "I can't breed those POKéMON.\n"
+	.string "Choose two different POKéMON.$"
 
 Route117_Text_SeeWifeIfYoudLikeMeToRaiseMon:
 	.string "I'm the DAY-CARE MAN.\p"
